@@ -1,0 +1,122 @@
+Design a streaming platform like Netflix:
+- Allow users to play videos and pause+play
+- Ability to download content for offline viewing.
+- Personalized content recommendations  
+
+
+
+
+Objective : 
+1. HLD + LLD for complete system
+2. Authentication and authorization is ignored for now
+3. User management CRUD is also assumed to present.
+
+
+ANswers;
+
+- Ability to download content for offline viewing.
+    - DRM or related technologies to encrypt the data for offline viewing.
+    - There is risk of reverse engineering to decrypt the data
+- Personalized recommendations
+    - We could use an AI/ML model to generate reco based on user events and user behvaiour.
+    - liked, watched, discontinued, disliekd movies.
+
+- Live events
+    - Login regions using the IP of the user.
+    - Clicks from the regions -- locate the region with surge in interest
+    - CDN update service would aggressively push the regions with large interest.
+    
+
+
+Netflix:
+
+FR:
+1. Much awaited content will create load. How to tackle that ?
+
+NFR:
+1. Fault-tolerant 
+2. Low-latency streaming 
+3. Available system 
+
+Observations:
+1. Data is primarily third-parties. 
+    - APIs for Upload is primarily done by few parties.
+    - Write load is small.
+2. Streaming at low-latency requires colocation of data.
+    - CDN is necessary
+    - Data needs to be saved in multiple formats for supporting various devices.
+        Bandwidth could be limited.
+    - Prefetching of the data could reduce buffering and improve UX.
+3. User's streaming data events such as play, pause, exit, replay etc need to be collected.
+    - These events can help understand the user behaviour and help create recommendations.
+    
+4. User need to be authenticated first.
+    - Also downloaded content should be encrypted.
+    - DRM and other related technologies can be utilized to protect against piracy.
+
+
+
+
+
+APIs:
+
+
+// THIRD PARTY DATA INGESTION -- NOT USED BY USER
+1. POST /v1/content + POST BODY
+    - This API takes metadata of the content and generates an ID.
+2. POST /v1/upload/{ID}
+    - can be used to upload the data in a single format
+
+
+// STREAM API
+1. GET /v1/details/{ID}
+    - Get the details of the movie or resource.
+    - JSON Body -- couple of chunsk that are readily streamable.
+    - CDN links that are
+    
+    {
+        "title": "",
+        "id" : "",
+        "total_chunks" : 10,
+        "total_pages": 10, 
+        "page" : 0,
+        "no_of_chunks":
+        "chunks" : [
+            "chunk_id" : {
+                "cdn_link": "",
+            },
+            "chunk_id" : {
+                "cdn_link": "", 
+            },
+        ],
+        "last_page" : boolean
+    }
+    
+2. GET /v1/video_chunk/{chunk_ID}
+    - Binary of a video that is playable our SDK.
+
+3. GET /v1/chuck_details/{video_ID}?last_chunk_id={}&progress={time-in-sec}
+
+    JSON BODY 
+    {
+        chunks : [
+            from: "timestamp",
+            to : "timestamp",
+            id: "chunkId",
+            cdn_link: "",
+            stream_link: "for streaming using streaming servers",
+        ]
+        
+    }    
+
+2 hr -> of 10 chunks = each 20 min of chunk
+    
+    
+    
+    
+    
+    
+    
+    
+    
+

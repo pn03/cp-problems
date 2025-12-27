@@ -1,0 +1,25 @@
+
+
+
+Domain objects:
+
+1. Subscription
+    State:
+        1. Initiated
+        2. Processing
+        3. Pro
+        4. Expired
+2. Order
+    State:
+        1. Created
+        2. Initiated
+        3. Processing
+        4. Success
+        5. Failure
+
+
+Interfaces:
+1. RefundablePartner
+    - We can trigger a refund for an order 
+2. UnrefundablePartner
+3. AcknowledgePartner
